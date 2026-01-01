@@ -63,7 +63,7 @@ io.on("connection", function (socket) {
       const result = chess.move(move);
       if (result) {
         currentPlayer = chess.turn(); // Update turn
-        io.emit("move", move); // Broadcast the move to all clients
+        socket.broadcast.emit("move", move); // Broadcast the move to other clients
         io.emit("chessState", chess.fen()); // Broadcast the updated board state
       } else {
         console.log("Invalid move:", move);
@@ -76,6 +76,6 @@ io.on("connection", function (socket) {
   });
 });
 
-server.listen(3000, () => {
+server.listen(3001, () => {
   console.log("Server is running on port 3000");
 });

@@ -5,46 +5,115 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Chess Game</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style>
+      /* Custom Scrollbar */
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: #1a202c; 
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #4a5568; 
+        border-radius: 4px;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: #718096; 
+      }
+
       .chessboard {
         display: grid;
-        grid-template-columns: repeat(8, 1fr);
-        grid-template-rows: repeat(8, 1fr);
-        width: 384px; /* Tailwind w-96 */
-        height: 384px;
-        border: 4px solid black;
+        grid-template-columns: repeat(8, minmax(0, 1fr));
+        grid-template-rows: repeat(8, minmax(0, 1fr));
+        width: 400px;
+        height: 400px;
+        /* Removed border, let the container handle it */
       }
+      
       .square {
         display: flex;
         align-items: center;
         justify-content: center;
         width: 100%;
         height: 100%;
+        overflow: hidden; /* Prevent dragging/content from expanding box */
+        transition: background-color 0.2s ease;
       }
+      
+      /* Midnight Theme Board Colors */
       .square.light {
-        background-color: #f0d9b5;
+        background-color: #cbd5e1; /* Slate-300 */
+        color: #1e293b; /* Slate-800 for pieces */
       }
+      
       .square.dark {
-        background-color: #b58863;
+        background-color: #475569; /* Slate-600 */
+        color: #f8fafc; /* Slate-50 for pieces */
       }
+      
+      /* Piece Styling */
       .piece {
-        font-size: 36px;
-        cursor: pointer;
-      }
-      .piece.draggable {
+        font-size: 40px;
         cursor: grab;
+        line-height: 1; /* Prevent vertical stretching */
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.4)); /* Depth */
+        transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        user-select: none; /* Prevent text selection */
       }
+
+      .piece.white {
+        color: #ffffff;
+        filter: drop-shadow(0 2px 4px rgba(0,0,0,0.6));
+      }
+      
+      .piece.black {
+        color: #1a1a1a; /* Soft black */
+        /* Add a light text-shadow/filter for visibility on dark squares */
+        filter: drop-shadow(0 2px 4px rgba(0,0,0,0.6)) drop-shadow(0 0 1px white); 
+      }
+      
+      .piece.draggable:active {
+        cursor: grabbing;
+        transform: scale(1.1); /* Pop effect */
+      }
+      
       .dragging {
         opacity: 0.5;
       }
+      
       /* Rotate pieces for black player */
       .flipped.piece {
         transform: rotate(180deg);
       }
+
+      /* Source Square Highlight */
+      .square.highlight-source {
+        background-color: rgba(255, 255, 0, 0.4) !important;
+        box-shadow: inset 0 0 10px rgba(0,0,0,0.2);
+      }
     </style>
   </head>
-  <body class="flex items-center justify-center bg-zinc-900 h-screen">
-    <div class="chessboard"></div>
+  <body class="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-gray-900 via-slate-900 to-black text-white font-sans overflow-hidden">
+    
+    <!-- Game Container with Glassmorphism -->
+    <div class="relative flex flex-col items-center p-8 rounded-2xl bg-white/5 backdrop-blur-xl border border-white/10 shadow-2xl ring-1 ring-white/5">
+        
+        <!-- Header -->
+        <h1 class="mb-6 text-4xl font-extrabold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-emerald-400 drop-shadow-sm">
+            Chess
+        </h1>
+
+        <!-- Status / Turn Indicator (Optional Placeholder) -->
+        <!-- <div id="gameStatus" class="mb-4 text-sm font-medium text-slate-400">Waiting for opponent...</div> -->
+
+        <div class="chessboard rounded-lg overflow-hidden shadow-2xl ring-4 ring-black/40"></div>
+    </div>
 
     <!-- Socket.IO -->
     <script

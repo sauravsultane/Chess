@@ -28,7 +28,8 @@ const renderBoard = () => {
                     "piece",
                     square.color === "w" ? "white" : "black"
                 );
-                pieceElement.innerText = getPieceUnicode(square.type, square.color);
+
+                pieceElement.innerHTML = getPieceElement(square.type, square.color);
                 pieceElement.draggable = playerRole === square.color; // Only draggable if it's the player's piece
 
                 pieceElement.addEventListener("dragstart", (e) => {
@@ -36,12 +37,16 @@ const renderBoard = () => {
                         draggedPiece = pieceElement;
                         sourceSquare = { row: rowIndex, col: colIndex };
                         e.dataTransfer.setData("text/plain", ""); // Required for drag-and-drop
+                        // Highlight source square
+                        squareElement.classList.add("highlight-source");
                     }
                 });
 
                 pieceElement.addEventListener("dragend", () => {
                     draggedPiece = null;
                     sourceSquare = null;
+                    // Remove highlight
+                    squareElement.classList.remove("highlight-source");
                 });
 
                 squareElement.appendChild(pieceElement);
@@ -92,17 +97,17 @@ const handleMove = (from, to) => {
     }
 };
 
-// Get the Unicode character for a chess piece
-const getPieceUnicode = (type, color) => {
+// Get the Font Awesome icon for a chess piece
+const getPieceElement = (type, color) => {
     const pieces = {
-        p: { w: "♙", b: "♟" },
-        r: { w: "♖", b: "♜" },
-        n: { w: "♘", b: "♞" },
-        b: { w: "♗", b: "♝" },
-        q: { w: "♕", b: "♛" },
-        k: { w: "♔", b: "♚" },
+        p: '<i class="fa-solid fa-chess-pawn"></i>',
+        r: '<i class="fa-solid fa-chess-rook"></i>',
+        n: '<i class="fa-solid fa-chess-knight"></i>',
+        b: '<i class="fa-solid fa-chess-bishop"></i>',
+        q: '<i class="fa-solid fa-chess-queen"></i>',
+        k: '<i class="fa-solid fa-chess-king"></i>',
     };
-    return pieces[type][color] || "";
+    return pieces[type] || "";
 };
 
 // Set player role (white/black)
@@ -118,7 +123,7 @@ socket.on("spectatorRole", () => {
 });
 
 // Update board state from the server
-socket.on("boardState", (fen) => {
+socket.on("chessState", (fen) => {
     try {
         chess.load(fen);
         renderBoard();
