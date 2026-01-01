@@ -2,8 +2,8 @@
 
 A stunning, modern real-time chess application featuring a **"Midnight Glass"** aesthetic. Built with **Node.js**, **Socket.io**, and **Tailwind CSS**.
 
-![Chess App Preview](https://i.imgur.com/placeholder-chess.png)
-*(Run the app and take a screenshot to place here!)*
+![Chess App Preview]([https://i.imgur.com/placeholder-chess.png](https://www.bing.com/ck/a?!&&p=d63390015812c0ae8e297a76f1a46dca28ef0d33e34ee7aba53672203398e8aeJmltdHM9MTc2NzIyNTYwMA&ptn=3&ver=2&hsh=4&fclid=0772501a-0369-6b1f-1d6a-45f602db6adf&u=a1L2ltYWdlcy9zZWFyY2g_cT1jaGVzcytpY29uK2xpbmsmaWQ9QjZEQUY3RTBENjBDRjRBMjFBQjU4MDU0NDI3RDE1RjYyNDU2NEU3MyZGT1JNPUlBQ0ZJUg&ntb=1))
+
 
 ## ✨ Key Features
 
