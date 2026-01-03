@@ -1,4 +1,4 @@
-# ♟️ Midnight Chess
+# ♟️ Chess
 
 A stunning, modern real-time chess application featuring a **"Midnight Glass"** aesthetic. Built with **Node.js**, **Socket.io**, and **Tailwind CSS**.
 
